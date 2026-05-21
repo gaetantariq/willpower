@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+
+  # ── API Express ──
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: willpower-api
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./server/.env
+    restart: unless-stopped
+
+  # ── Front React (nginx) ──
+  front:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+    container_name: willpower-front
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    restart: unless-stopped

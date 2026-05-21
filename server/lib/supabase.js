@@ -1,0 +1,20 @@
+import { createClient } from '@supabase/supabase-js'
+import ws from 'ws'
+import 'dotenv/config'
+
+export const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY,
+  { realtime: { transport: ws } }
+)
+
+export function supabaseAs(token) {
+  return createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
+    {
+      realtime: { transport: ws },
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    }
+  )
+}
